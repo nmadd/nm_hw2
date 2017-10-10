@@ -38,24 +38,33 @@ class Graph:
     def getGraph(self):
         return self.graph
 
-    def get_path(self, source, sink, path=[], visited_paths=set()):
+    def get_path(self, source, sink, path, visited_paths):
         # base case
         if source == sink:
             return path
         for edge in self.graph[source]:
+            print(edge)
+            print("SOURCE", source)
+            print(visited_paths)
             residual = edge.capacity - edge.flow
-            if residual > 0 and (edge, residual) not in visited_paths:
-                visited_paths.add((edge, residual))
-                return self.get_path(edge.sink, sink, path + [edge, residual], visited_paths)
+            # check that vert has not been previously visited (keep moving forward)
+            if residual > 0 and edge.sink not in visited_paths:
+                visited_paths.add(source)
+                result = self.get_path(edge.sink, sink, path + [(edge, residual)], visited_paths)
+                if result != None:
+                    return result
 
     def maxFlow(self, source, sink):
         result = 0
-        path = self.get_path(source, sink)
+        path = self.get_path(source, sink, [], set())
         while path != None:
+            print(path)
             flow = min(residual for edge, residual in path)
             for edge, res in path:
                 edge.flow += flow
                 edge.reverseEdge.flow -= flow
             result += flow
-            path = self.get_path(source, sink)
+            self.printGraph()
+            print("LLOOPPINGG")
+            path = self.get_path(source, sink, [], set())
         return result
