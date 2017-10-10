@@ -47,3 +47,15 @@ class Graph:
             if residual > 0 and (edge, residual) not in visited_paths:
                 visited_paths.add((edge, residual))
                 return self.get_path(edge.sink, sink, path + [edge, residual], visited_paths)
+
+    def maxFlow(self, source, sink):
+        result = 0
+        path = self.get_path(source, sink)
+        while path != None:
+            flow = min(residual for edge, residual in path)
+            for edge, res in path:
+                edge.flow += flow
+                edge.reverseEdge.flow -= flow
+            result += flow
+            path = self.get_path(source, sink)
+        return result
