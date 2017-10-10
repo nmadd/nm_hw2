@@ -1,53 +1,42 @@
+from edge import Edge
 import random
 
 class Graph:
     def __init__(self, initialGraph={}):
-        self.nodes = initialGraph
+        self.graph = initialGraph
+        self.flow = 0
 
-    # nodes (aka vertexes): {1 : [2], 2:[1], 3:[]} etc...
+    # node (aka vertexes): {1 : [2], 2:[1], 3:[]} etc...
     def addNode(self, node):
-        self.nodes[node] = set()
+        self.graph[node] = set()
 
-    def addEdge(self, node1, node2):
-        self.nodes[node1].add(node2)
-        self.nodes[node2].add(node1)
+    def createEdge(self, source, sink, capacity):
+        newEdge = Edge(source, sink, capacity)
+        newReverseEdge = Edge(sink, source, capacity)
+        newEdge.reverseEdge = newReverseEdge
+        return newEdge
+        # self.graph[source].append(newEdge)
 
-    # create a graph of x size and with y probability that each nodes are connected
-    def initGraph(self, size, probability):
-        currentNode = 1
-        while currentNode <= size:
-            self.addNode(currentNode)
-            for vert, edges in self.nodes.items():
-                if vert != currentNode and random.random() < probability:
-                    self.addEdge(vert, currentNode)
-            currentNode += 1
+    # create a graph of x size and with y probability that each node is connected
+    def initGraph(self):
+        for vert in self.graph:
+            edgeList = self.graph[vert]
+            edgeListLength = len(edgeList)
+            for i in range(0, edgeListLength):
+                edge = edgeList[i]
+                edgeList[i] = self.createEdge(edge[0], edge[1], edge[2])
+                print(edgeList[i].reverseEdge.sink)
 
     def printGraph(self):
-        print(self.nodes)
+        print(self.graph)
 
     def getGraph(self):
-        return self.nodes
+        return self.graph
 
-    # search through graph and find shortest path
-    def bfs(self, startingNode, target):
-        q = [startingNode]
-        history = set()
-        pathLengths = {startingNode: 0}
-
-        while len(q) >= 1:
-            currentNode = q.pop(0)
-            history.add(currentNode)
-            for node in self.nodes[currentNode]:
-                if node not in history:
-                    q.append(node)
-                if node not in pathLengths:
-                    pathLengths[node] = pathLengths[currentNode] + 1
-
-            if currentNode == target:
-                # if the node is not in history, add it to the q
-                # in other words, never go backwards - only visit each node once
-                if target not in pathLengths:
-                    return 'infinity'
-                else:
-                    result = pathLengths[target]
-                    return result
+    def get_path(self, source, sink, path, visited_paths):
+        # base case
+        if source == sink:
+            return path
+        for edge in self.graph[source]:
+            residual = edge.capacity - edge.flow
+            if residual > 0 and not ()
