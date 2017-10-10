@@ -14,7 +14,7 @@ class Graph:
 
     def addEdge(self, source, sink, capacity):
         newEdge = Edge(source, sink, capacity)
-        newReverseEdge = Edge(sink, source, capacity)
+        newReverseEdge = Edge(sink, source, 0)
         newEdge.reverseEdge = newReverseEdge
         newReverseEdge.reverseEdge = newEdge
         self.graph[source].append(newEdge)
@@ -38,10 +38,12 @@ class Graph:
     def getGraph(self):
         return self.graph
 
-    # def get_path(self, source, sink, path, visited_paths):
-    #     # base case
-    #     if source == sink:
-    #         return path
-    #     for edge in self.graph[source]:
-    #         residual = edge.capacity - edge.flow
-    #         if residual > 0 and not ()
+    def get_path(self, source, sink, path=[], visited_paths=set()):
+        # base case
+        if source == sink:
+            return path
+        for edge in self.graph[source]:
+            residual = edge.capacity - edge.flow
+            if residual > 0 and (edge, residual) not in visited_paths:
+                visited_paths.add((edge, residual))
+                return self.get_path(edge.sink, sink, path + [edge, residual], visited_paths)
