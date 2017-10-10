@@ -5,3 +5,6 @@ class Edge:
         self.capacity = capacity
         self.flow = flow
         self.reverseEdge = None
+
+    def __repr__(self):
+        return "<Edge source:%s sink:%s capacity:%s flow:%s>" % (self.source, self.sink, self.capacity, self.flow)
