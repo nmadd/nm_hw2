@@ -6,6 +6,8 @@ class Graph:
         self.graph = {}
         self.graphSeedData = graphSeedData
         self.flow = 0
+        self.initGraph()
+
 
 
     # node (aka vertexes): {1 : [2], 2:[1], 3:[]} etc...
@@ -26,8 +28,14 @@ class Graph:
             if source not in self.graph:
                 self.addNode(source)
             edgeList = self.graphSeedData[source]
+            sink = None
+            capacity = None
             for edge in edgeList:
-                sink, capacity = edge
+                if type(edge) == tuple:
+                    sink, capacity = edge
+                else:
+                    sink = edge
+                    capacity = 1
                 if sink not in self.graph:
                     self.addNode(sink)
                 self.addEdge(source, sink, capacity)
@@ -43,9 +51,6 @@ class Graph:
         if source == sink:
             return path
         for edge in self.graph[source]:
-            print(edge)
-            print("SOURCE", source)
-            print(visited_paths)
             residual = edge.capacity - edge.flow
             # check that vert has not been previously visited (keep moving forward)
             if residual > 0 and edge.sink not in visited_paths:
@@ -58,13 +63,10 @@ class Graph:
         result = 0
         path = self.get_path(source, sink, [], set())
         while path != None:
-            print(path)
             flow = min(residual for edge, residual in path)
             for edge, res in path:
                 edge.flow += flow
                 edge.reverseEdge.flow -= flow
             result += flow
-            self.printGraph()
-            print("LLOOPPINGG")
             path = self.get_path(source, sink, [], set())
         return result

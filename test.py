@@ -1,8 +1,12 @@
 from graph import Graph
+from parseFacebook import parseFacebookData, createFacebookGraph
 
-testGraph = {1: [(2, 1), (3, 3)], 2: [(3, 2), (4, 1)], 3: [(4, 1)], 4: []}
+testGraph = {0: [(1, 1), (2, 3)], 1: [(2, 2), (3, 5)], 2: [(3, 1)], 3: [(4, 2),(5, 5)], 4: [(5, 5), (2, 3)], 5:[(1, 5)]}
+# 1 -> 5: 6
+# 2 -> 5: 1
+# 3 -> 5: 7
+# 4 -> 5: 6
 
-g = Graph(testGraph)
-g.initGraph()
-print(g.maxFlow(1, 4))
+g = Graph(createFacebookGraph(parseFacebookData('./facebook_combined.txt')))
+print(g.maxFlow(430, 483))
 # g.printGraph()
