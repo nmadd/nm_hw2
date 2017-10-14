@@ -1,7 +1,7 @@
 from edge import Edge
 import random
 
-class Graph:
+class Flow:
     def __init__(self, graphSeedData):
         self.graph = {}
         self.graphSeedData = graphSeedData
