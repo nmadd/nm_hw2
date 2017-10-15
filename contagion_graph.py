@@ -33,8 +33,8 @@ class Graph:
             x = 0
             y = 0
             if node.choice != 'X':
-                for edge in node.edges:
-                    if self.graph[edge].choice == 'X':
+                for neighbor in node.edges:
+                    if self.graph[neighbor].choice == 'X':
                         x += 1
                     else:
                         y += 1
@@ -46,6 +46,9 @@ class Graph:
     def brd(self, q):
         while self.flipOrStay(q):
             continue
+
+    def countChoice(self, choice):
+        return [x.choice for x in self.graph.values()].count(choice)
 
 
     def printGraph(self):

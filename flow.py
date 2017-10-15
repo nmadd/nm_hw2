@@ -10,7 +10,7 @@ class Flow:
 
 
 
-    # node (aka vertexes): {1 : [2], 2:[1], 3:[]} etc...
+    # node (aka vertexes): {1 : [{source: 1, sink: 2, capacity: 4, flow: 0}], 2:[1], 3:[]} etc...
     def addNode(self, node):
         self.graph[node] = []
 

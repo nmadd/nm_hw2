@@ -1,4 +1,6 @@
 from contagion_graph import Graph
+from parseFacebook import parseFacebookData, createUndirectedFacebookGraph
+from random import randint
 #############
 # Contagion in an undirected graph
 ##
@@ -16,8 +18,19 @@ from contagion_graph import Graph
 ##
 #
 
+def createEarlyAdopterSet(num):
+    randomSet = []
+    for i in range(0, num):
+        x = randint(0, 4038)
+        randomSet.append(x)
+    return set(randomSet)
+
 g = Graph({1: [2, 3], 2: [1, 3,4], 3: [1, 2, 4], 4: [1, 3]})
+g = Graph(createUndirectedFacebookGraph(parseFacebookData('./facebook_combined.txt')))
 g.initGraph()
-g.infectEarlyAdopters(set([2,3]), 'X')
-g.brd(.1)
-g.printGraph()
+g.infectEarlyAdopters(createEarlyAdopterSet(100), 'X')
+threshold = .2
+g.brd(threshold)
+print('threshold', threshold)
+print('X: ', g.countChoice('X'))
+print('Y:', g.countChoice('Y'))

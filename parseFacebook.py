@@ -20,3 +20,16 @@ def createFacebookGraph(rawData):
         graph[node1].add(node2)
         # graph[node2].add(node1)
     return graph
+
+def createUndirectedFacebookGraph(rawData):
+    graph = {}
+    for pair in rawData:
+        node1 = int(pair[0])
+        node2 = int(pair[1])
+        if node1 not in graph:
+            graph[node1] = set()
+        if node2 not in graph:
+            graph[node2] = set()
+        graph[node1].add(node2)
+        graph[node2].add(node1)
+    return graph
