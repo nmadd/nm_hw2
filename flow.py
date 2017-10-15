@@ -1,5 +1,8 @@
 from edge import Edge
 import random
+import sys
+
+sys.setrecursionlimit(5000)
 
 class Flow:
     def __init__(self, graphSeedData):
@@ -16,7 +19,7 @@ class Flow:
 
     def addEdge(self, source, sink, capacity):
         newEdge = Edge(source, sink, capacity)
-        newReverseEdge = Edge(sink, source, 0)
+        newReverseEdge = Edge(sink, source, capacity)
         newEdge.reverseEdge = newReverseEdge
         newReverseEdge.reverseEdge = newEdge
         self.graph[source].append(newEdge)
