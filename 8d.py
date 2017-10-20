@@ -18,4 +18,4 @@ def testGraph(numOfTests):
         # print(rand1, rand2, g.maxFlow(rand1, rand2))
     print('Avg. Flow: {}'.format(flow/float(numOfTests)))
 
-testGraph(1000)
+testGraph(100)

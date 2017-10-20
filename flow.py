@@ -5,13 +5,13 @@ import sys
 sys.setrecursionlimit(5000)
 
 class Flow:
-    def __init__(self, graphSeedData):
+    def __init__(self, graphSeedData, directed=False):
         self.graph = {}
         self.graphSeedData = graphSeedData
         self.flow = 0
+        # boolean to flag if graph is directed or undirected
+        self.directed = directed
         self.initGraph()
-
-
 
     # node (aka vertexes): {1 : [{source: 1, sink: 2, capacity: 4, flow: 0}], 2:[1], 3:[]} etc...
     def addNode(self, node):
@@ -19,7 +19,7 @@ class Flow:
 
     def addEdge(self, source, sink, capacity):
         newEdge = Edge(source, sink, capacity)
-        newReverseEdge = Edge(sink, source, capacity)
+        newReverseEdge = Edge(sink, source, capacity) if self.directed == False else Edge(sink, source, 0)
         newEdge.reverseEdge = newReverseEdge
         newReverseEdge.reverseEdge = newEdge
         self.graph[source].append(newEdge)
