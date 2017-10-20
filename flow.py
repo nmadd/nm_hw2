@@ -66,7 +66,7 @@ class Flow:
         result = 0
         path = self.get_path(source, sink, [], set())
         while path != None:
-            flow = min(residual for edge, residual in path)
+            flow = min(residual for edge, residual in path) if len(path) > 0 else 0
             for edge, res in path:
                 edge.flow += flow
                 edge.reverseEdge.flow -= flow

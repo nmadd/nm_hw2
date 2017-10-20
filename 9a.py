@@ -1,36 +1,16 @@
 from contagion_graph import Graph
 from parseFacebook import parseFacebookData, createUndirectedFacebookGraph
 from random import randint
-#############
-# Contagion in an undirected graph
-##
-###
 
-# @Params: set of early adopts earlyAdopters, threshold q (such that a certain choice X will spread to a node if more than q fraction of its neighbors are playing it)
-# @Steps:
-# - loop through graph and infect early adopters
-# - loop through early adopters and infect all neighbors that are above threshold
-#   - use queue to loop through neighbors
-#   - track history of visited nodes to make sure not repeating nodes
-# - return once queue is empty
+graph3_1a = Graph({1: [2], 2: [1, 3], 3: [2, 4], 4: [3]})
+graph3_1a_early_adopters = {1, 2}
+graph3_1b = Graph({1: [2], 2: [1, 3, 4], 3: [2], 4: [2, 5, 6], 5: [4], 6: [4, 7], 7: [6]})
+graph3_1b_early_adopters = {1, 2, 3}
 
-###
-##
-#
+print('3_1a Tests:')
+for q in [x / 100.0 for x in range(45, 55, 1)]:
+    print(graph3_1a.findAverageBrd(1, q, graph3_1a_early_adopters))
 
-def createEarlyAdopterSet(num):
-    randomSet = []
-    for i in range(0, num):
-        x = randint(0, 4038)
-        randomSet.append(x)
-    return set(randomSet)
-
-g = Graph({1: [2, 3], 2: [1, 3,4], 3: [1, 2, 4], 4: [1, 3]})
-g = Graph(createUndirectedFacebookGraph(parseFacebookData('./facebook_combined.txt')))
-g.initGraph()
-g.infectEarlyAdopters(createEarlyAdopterSet(100), 'X')
-threshold = .2
-g.brd(threshold)
-print('threshold', threshold)
-print('X: ', g.countChoice('X'))
-print('Y:', g.countChoice('Y'))
+print('3_1b Tests:')
+for q in [x / 100.0 for x in range(30, 40, 1)]:
+    print(graph3_1b.findAverageBrd(1, q, graph3_1b_early_adopters))
